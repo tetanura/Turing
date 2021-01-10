@@ -1,4 +1,4 @@
-N = 60
+N = 50
 a = Array.new(N).map{Array.new(N,0)}
 ih = Array.new(N).map{Array.new(N,0)}
 aa = Array.new(N).map{Array.new(N,0)}
@@ -13,6 +13,7 @@ iinf = 1
 ainf = 1
 adif = 1
 idif = 2
+
 File.open("input.txt", mode = "w"){|f|
   f.write([div,ipro,apro,arep,iinf,ainf])
 }
@@ -24,7 +25,7 @@ for i in 0..(N-1)
 end
 def visualize(ar,time)
   $op = ""
-  $op << "#{time} Cycle\n"
+  $op << "#{time} 秒後\n"
   for i in 0..(N-1)
     for j in 0..(N-1)
       if ar[i][j] == 1
