@@ -1,0 +1,85 @@
+N = 60
+a = Array.new(N).map{Array.new(N,0)}
+ih = Array.new(N).map{Array.new(N,0)}
+aa = Array.new(N).map{Array.new(N,0)}
+iih = Array.new(N).map{Array.new(N,0)}
+T = 50
+t = T
+div = 15
+ipro = 7
+apro = 5
+arep = 1
+iinf = 1
+ainf = 1
+adif = 1
+idif = 2
+File.open("input.txt", mode = "w"){|f|
+  f.write([div,ipro,apro,arep,iinf,ainf])
+}
+for i in 0..(N-1)
+  for j in 0..(N-1)
+    r = rand(1..10000)
+    a[i][j] = 1 if r%div==0
+  end
+end
+def visualize(ar,time)
+  $op = ""
+  $op << "#{time} Cycle\n"
+  for i in 0..(N-1)
+    for j in 0..(N-1)
+      if ar[i][j] == 1
+        $op <<  "⬛️"
+      else
+        $op << "⬜️"
+      end
+    end
+    $op << "\n"
+  end
+  File.open("input.txt", mode = "a"){|f|
+  f.write($op)
+}
+end
+def copy(f,g)
+  for i in 0..(N-1)
+    for j in 0..(N-1)
+      f[i][j] = g[i][j]
+      g[i][j] = 0
+    end
+  end
+end
+visualize(a,0)
+while t > 0
+  for i in 0..(N-1)
+    for j in 0..(N-1)
+      for k in -adif..adif
+        for l in -adif..adif
+          x = i+k
+          x += N if x < 0
+          x -= N if x >= N
+          y = j+l
+          y += N if y < 0
+          y -= N if y >= N
+          iih[i][j] += ipro if a[x][y] == 1
+          aa[i][j] += apro if a[x][y] == 1
+        end
+      end
+      for k in -idif..idif
+        for l in -idif..idif
+          x = i+k
+          x += N if x < 0
+          x -= N if x >= N
+          y = j+l
+          y += N if y < 0
+          y -= N if y >= N
+          aa[i][j] -= arep if ih[x][y] == 1
+        end
+      end
+      iih[i][j] > iinf ? iih[i][j] = 1 : iih[i][j] = 0
+      aa[i][j] > ainf ? aa[i][j] = 1 : aa[i][j] = 0
+    end
+  end
+  copy(a,aa)
+  copy(ih,iih)
+  t -= 1
+  visualize(a,T-t)
+end
